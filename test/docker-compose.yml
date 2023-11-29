@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  mybunker:
+    image: bunkerity/bunkerweb:1.4.8 
+    ports:
+      - 80:8080
+      - 443:8443
+    volumes:
+      - ./bw-data:/data
+    environment:
+      - USE_BAD_BEHAVIOR=no
+      - USE_DNSBL=no
+      - SERVER_NAME=test2.site.ru test3.site.ru
+      - USE_WHITELIST=no
+      - USE_ANTIBOT=javascript
+      - USE_BLACKLIST=no
+      - USE_CLIENT_CACHE=yes
+      - USE_GZIP=yes
+      - USE_REVERSE_PROXY=yes
+      - REVERSE_PROXY_URL=/
+      - REVERSE_PROXY_HOST=http://app
+      - |
+        CUSTOM_CONF_HTTP_upstream.conf=
+        upstream app {
+          server 77.22.2.0:80;
+        }        
+    restart: always
+
+volumes:
+  bw_data:
